@@ -61,7 +61,9 @@ namespace SoLoud
 
     static void alsaThread(void *aParam)
     {
-        
+	// @hxg-begin
+        SoLoud::Thread::nameThread("Soloud_Alsa");
+	// @hxg-end
         ALSAData *data = static_cast<ALSAData*>(aParam);
         while (!data->audioProcessingDone) 
         {            

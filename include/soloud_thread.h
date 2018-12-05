@@ -48,6 +48,10 @@ namespace SoLoud
         void release(ThreadHandle aThreadHandle);
 		int getTimeMillis();
 
+		// @hxg-begin
+		void nameThread(const char* _name);
+		// @hxg-end
+
 #define MAX_THREADPOOL_TASKS 1024
 
 		class PoolTask

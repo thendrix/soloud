@@ -29,6 +29,11 @@ freely, subject to the following restrictions:
 #include <pthread.h>
 #include <unistd.h>
 #include <time.h>
+	// @hxg-begin
+	#include <string.h>
+	#include <sys/prctl.h>
+	#define SoLoudMin( x, min ) ((x) < (min)) ? (x) : (min)
+	// @hxg-end
 #endif
 
 #include "soloud.h"
@@ -180,6 +185,15 @@ namespace SoLoud
 			void *mParam;
 		};
 
+		// @hxg-begin
+		void nameThread(const char* _name)
+		{
+			char truncatedName[16] = {0};
+			strncpy(truncatedName, _name, SoLoudMin(sizeof(truncatedName), 15));
+			prctl(PR_SET_NAME, truncatedName, 0, 0, 0);
+		}
+		// @hxg-end
+
 		static void * threadfunc(void * d)
 		{
 			soloud_thread_data *p = (soloud_thread_data *)d;
@@ -223,7 +237,7 @@ namespace SoLoud
 			struct timespec spec;
 			clock_gettime(CLOCK_REALTIME, &spec);
 			return spec.tv_sec * 1000 + (int)(spec.tv_nsec / 1.0e6);
-		}
+        }
 #endif
 
 		static void poolWorker(void *aParam)
